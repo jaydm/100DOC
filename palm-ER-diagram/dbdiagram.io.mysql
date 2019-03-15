@@ -35,18 +35,21 @@ CREATE TABLE `componentTypeAttribute`
 
 CREATE TABLE `generic` 
 (
-	`id` long,
+	`id` varchar(255),
 	`specCategoryID` long,
 	`specLineID` long,
 	`specGroupID` long,
-	`name` varchar(255)
+	`version` long,
+	`name` varchar(255),
+	`ownerID` long
 );
 
 CREATE TABLE `genericComponent` 
 (
 	`id` long,
-	`genericID` long,
-	`componentTypeID` long
+	`genericID` varchar(255),
+	`componentTypeID` long,
+	`label` varchar(255)
 );
 
 CREATE TABLE `genericComponentAttribute` 
@@ -91,6 +94,47 @@ CREATE TABLE `lineGroup`
 	`groupID` long
 );
 
+CREATE TABLE `user` 
+(
+	`id` long,
+	`firstName` varchar(255),
+	`lastName` varchar(255),
+	`password` varchar(255),
+	`active` boolean
+);
+
+CREATE TABLE `specification` 
+(
+	`id` varchar(255),
+	`parentID` varchar(255),
+	`categoryID` long,
+	`lineID` long,
+	`groupID` long,
+	`version` long,
+	`name` varchar(255),
+	`description` blob,
+	`ownerID` long
+);
+
+CREATE TABLE `component` 
+(
+	`id` long,
+	`specID` varchar(255),
+	`parentID` long,
+	`componentTypeID` long,
+	`label` varchar(255)
+);
+
+CREATE TABLE `componentAttribute` 
+(
+	`id` long,
+	`componentID` long,
+	`attributeID` long,
+	`sequence` int,
+	`attributeValueID` long,
+	`value` varchar(255)
+);
+
 ALTER TABLE `attribute` ADD FOREIGN KEY (`attributeTypeID`) REFERENCES `attributeType` (`id`);
 
 ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`componentTypeID`) REFERENCES `componentType` (`id`);
@@ -116,3 +160,29 @@ ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`genericComponentID`) R
 ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
 
 ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`attributeValueOptionID`) REFERENCES `attributeValueOption` (`id`);
+
+ALTER TABLE `generic` ADD FOREIGN KEY (`ownerID`) REFERENCES `user` (`id`);
+
+ALTER TABLE `generic` ADD FOREIGN KEY (`specCategoryID`) REFERENCES `specCategory` (`id`);
+
+ALTER TABLE `generic` ADD FOREIGN KEY (`specLineID`) REFERENCES `specLine` (`id`);
+
+ALTER TABLE `generic` ADD FOREIGN KEY (`specGroupID`) REFERENCES `specGroup` (`id`);
+
+ALTER TABLE `specification` ADD FOREIGN KEY (`categoryID`) REFERENCES `specCategory` (`id`);
+
+ALTER TABLE `specification` ADD FOREIGN KEY (`lineID`) REFERENCES `specLine` (`id`);
+
+ALTER TABLE `specification` ADD FOREIGN KEY (`groupID`) REFERENCES `specGroup` (`id`);
+
+ALTER TABLE `specification` ADD FOREIGN KEY (`ownerID`) REFERENCES `user` (`id`);
+
+ALTER TABLE `component` ADD FOREIGN KEY (`componentTypeID`) REFERENCES `componentType` (`id`);
+
+ALTER TABLE `component` ADD FOREIGN KEY (`specID`) REFERENCES `specification` (`id`);
+
+ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`componentID`) REFERENCES `component` (`id`);
+
+ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
+
+ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`attributeValueID`) REFERENCES `attributeValueOption` (`id`);

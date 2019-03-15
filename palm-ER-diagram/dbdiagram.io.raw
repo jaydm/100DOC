@@ -29,17 +29,20 @@ Table componentTypeAttribute as compTypeAttr {
 }
 
 Table generic {
-  id long PK
+  id varchar PK
   specCategoryID long
   specLineID long
   specGroupID long
+  version long
   name varchar
+  ownerID long
 }
 
 Table genericComponent as genComp {
   id long PK
-  genericID long
+  genericID varchar
   componentTypeID long
+  label varchar
 }
 
 Table genericComponentAttribute as genCompAttr {
@@ -78,6 +81,42 @@ Table lineGroup as lineGrp {
   groupID long
 }
 
+Table user {
+  id long PK
+  firstName varchar
+  lastName varchar
+  password varchar
+  active boolean
+}
+
+Table specification as spec {
+  id varchar PK
+  parentID varchar
+  categoryID long
+  lineID long
+  groupID long
+  version long
+  name varchar
+  description blob
+  ownerID long
+}
+
+Table component as specComp {
+  id long PK
+  specID varchar
+  parentID long
+  componentTypeID long
+  label varchar
+}
+
+Table componentAttribute as specAttr {
+  id long PK
+  componentID long
+  attributeID long
+  sequence int
+  attributeValueID long
+  value varchar
+}
 
 Ref: "attributeType"."id" < "attribute"."attributeTypeID"
 
@@ -104,3 +143,29 @@ Ref: "genericComponent"."id" < "genericComponentAttribute"."genericComponentID"
 Ref: "attribute"."id" < "genericComponentAttribute"."attributeID"
 
 Ref: "attributeValueOption"."id" < "genericComponentAttribute"."attributeValueOptionID"
+
+Ref: "user"."id" < "generic"."ownerID"
+
+Ref: "specCategory"."id" < "generic"."specCategoryID"
+
+Ref: "specLine"."id" < "generic"."specLineID"
+
+Ref: "specGroup"."id" < "generic"."specGroupID"
+
+Ref: "specCategory"."id" < "specification"."categoryID"
+
+Ref: "specLine"."id" < "specification"."lineID"
+
+Ref: "specGroup"."id" < "specification"."groupID"
+
+Ref: "user"."id" < "specification"."ownerID"
+
+Ref: "componentType"."id" < "component"."componentTypeID"
+
+Ref: "specification"."id" < "component"."specID"
+
+Ref: "component"."id" < "componentAttribute"."componentID"
+
+Ref: "attribute"."id" < "componentAttribute"."attributeID"
+
+Ref: "attributeValueOption"."id" < "componentAttribute"."attributeValueID"
