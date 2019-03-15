@@ -1,0 +1,39 @@
+Table attribute {
+  id long PK
+  attributeTypeID long
+  name varchar
+}
+
+Table attributeType {
+  id long PK
+  name varchar
+  type enum
+}
+
+Table attributeValueOption {
+  id long PK
+  attributeID long
+  value varchar
+}
+
+Table componentType {
+  id long PK
+  name varchar
+}
+
+Table componentTypeAttribute {
+  id long PK
+  componentTypeID long
+  attributeID long
+  sequence int
+}
+
+
+Ref: "attributeType"."id" < "attribute"."attributeTypeID"
+
+Ref: "componentType"."id" < "componentTypeAttribute"."componentTypeID"
+
+Ref: "attribute"."id" < "componentTypeAttribute"."attributeID"
+
+Ref: "attribute"."id" < "attributeValueOption"."id"
+
