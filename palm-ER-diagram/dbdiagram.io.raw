@@ -1,31 +1,81 @@
-Table attribute {
+Table attribute as attr {
   id long PK
   attributeTypeID long
   name varchar
 }
 
-Table attributeType {
+Table attributeType as attrType {
   id long PK
   name varchar
-  type enum
+  type enum 
 }
 
-Table attributeValueOption {
+Table attributeValueOption as attrValOpt {
   id long PK
   attributeID long
   value varchar
 }
 
-Table componentType {
+Table componentType as compType {
   id long PK
   name varchar
 }
 
-Table componentTypeAttribute {
+Table componentTypeAttribute as compTypeAttr {
   id long PK
   componentTypeID long
   attributeID long
   sequence int
+}
+
+Table generic {
+  id long PK
+  specCategoryID long
+  specLineID long
+  specGroupID long
+  name varchar
+}
+
+Table genericComponent as genComp {
+  id long PK
+  genericID long
+  componentTypeID long
+}
+
+Table genericComponentAttribute as genCompAttr {
+  id long PK
+  genericComponentID long
+  attributeID long
+  sequence int
+  attributeValueOptionID long
+  value varchar
+}
+
+Table specCategory as cat {
+  id long PK
+  name varchar
+}
+
+Table specLine as line {
+  id long PK
+  name varchar
+}
+
+Table specGroup as grp {
+  id long PK
+  name varchar
+}
+
+Table categoryLine as catLine {
+  id long PK
+  categoryID long
+  lineID long
+}
+
+Table lineGroup as lineGrp {
+  id long PK
+  lineID long
+  groupID long
 }
 
 
@@ -37,3 +87,20 @@ Ref: "attribute"."id" < "componentTypeAttribute"."attributeID"
 
 Ref: "attribute"."id" < "attributeValueOption"."id"
 
+Ref: "specLine"."id" < "lineGroup"."lineID"
+
+Ref: "specGroup"."id" < "lineGroup"."groupID"
+
+Ref: "specCategory"."id" < "categoryLine"."categoryID"
+
+Ref: "specLine"."id" < "categoryLine"."lineID"
+
+Ref: "componentType"."id" < "genericComponent"."componentTypeID"
+
+Ref: "generic"."id" < "genericComponent"."genericID"
+
+Ref: "genericComponent"."id" < "genericComponentAttribute"."genericComponentID"
+
+Ref: "attribute"."id" < "genericComponentAttribute"."attributeID"
+
+Ref: "attributeValueOption"."id" < "genericComponentAttribute"."attributeValueOptionID"

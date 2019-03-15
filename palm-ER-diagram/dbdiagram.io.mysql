@@ -33,6 +33,64 @@ CREATE TABLE `componentTypeAttribute`
 	`sequence` int
 );
 
+CREATE TABLE `generic` 
+(
+	`id` long,
+	`specCategoryID` long,
+	`specLineID` long,
+	`specGroupID` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `genericComponent` 
+(
+	`id` long,
+	`genericID` long,
+	`componentTypeID` long
+);
+
+CREATE TABLE `genericComponentAttribute` 
+(
+	`id` long,
+	`genericComponentID` long,
+	`attributeID` long,
+	`sequence` int,
+	`attributeValueOptionID` long,
+	`value` varchar(255)
+);
+
+CREATE TABLE `specCategory` 
+(
+	`id` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `specLine` 
+(
+	`id` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `specGroup` 
+(
+	`id` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `categoryLine` 
+(
+	`id` long,
+	`categoryID` long,
+	`lineID` long
+);
+
+CREATE TABLE `lineGroup` 
+(
+	`id` long,
+	`lineID` long,
+	`groupID` long
+);
+
 ALTER TABLE `attribute` ADD FOREIGN KEY (`attributeTypeID`) REFERENCES `attributeType` (`id`);
 
 ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`componentTypeID`) REFERENCES `componentType` (`id`);
@@ -40,3 +98,21 @@ ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`componentTypeID`) REFEREN
 ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
 
 ALTER TABLE `attributeValueOption` ADD FOREIGN KEY (`id`) REFERENCES `attribute` (`id`);
+
+ALTER TABLE `lineGroup` ADD FOREIGN KEY (`lineID`) REFERENCES `specLine` (`id`);
+
+ALTER TABLE `lineGroup` ADD FOREIGN KEY (`groupID`) REFERENCES `specGroup` (`id`);
+
+ALTER TABLE `categoryLine` ADD FOREIGN KEY (`categoryID`) REFERENCES `specCategory` (`id`);
+
+ALTER TABLE `categoryLine` ADD FOREIGN KEY (`lineID`) REFERENCES `specLine` (`id`);
+
+ALTER TABLE `genericComponent` ADD FOREIGN KEY (`componentTypeID`) REFERENCES `componentType` (`id`);
+
+ALTER TABLE `genericComponent` ADD FOREIGN KEY (`genericID`) REFERENCES `generic` (`id`);
+
+ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`genericComponentID`) REFERENCES `genericComponent` (`id`);
+
+ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
+
+ALTER TABLE `genericComponentAttribute` ADD FOREIGN KEY (`attributeValueOptionID`) REFERENCES `attributeValueOption` (`id`);
