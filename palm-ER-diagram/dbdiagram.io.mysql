@@ -1,0 +1,42 @@
+CREATE TABLE `attribute` 
+(
+	`id` long,
+	`attributeTypeID` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `attributeType` 
+(
+	`id` long,
+	`name` varchar(255),
+	`type` enum
+);
+
+CREATE TABLE `attributeValueOption` 
+(
+	`id` long,
+	`attributeID` long,
+	`value` varchar(255)
+);
+
+CREATE TABLE `componentType` 
+(
+	`id` long,
+	`name` varchar(255)
+);
+
+CREATE TABLE `componentTypeAttribute` 
+(
+	`id` long,
+	`componentTypeID` long,
+	`attributeID` long,
+	`sequence` int
+);
+
+ALTER TABLE `attribute` ADD FOREIGN KEY (`attributeTypeID`) REFERENCES `attributeType` (`id`);
+
+ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`componentTypeID`) REFERENCES `componentType` (`id`);
+
+ALTER TABLE `componentTypeAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
+
+ALTER TABLE `attributeValueOption` ADD FOREIGN KEY (`id`) REFERENCES `attribute` (`id`);
