@@ -1,8 +1,3 @@
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-
 function isMultipleOfThree(number) {
   let multiple = 0
 
@@ -50,6 +45,4 @@ function fizzBuzz(countUpTo) {
   }
 }
 
-readline.question('What number do you want to count up to: ', (countTo) => {
-  fizzBuzz(countTo)
-})
+fizzBuzz(100)
