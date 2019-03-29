@@ -1,0 +1,14 @@
+{
+  "name": "fizzbuzz",
+  "version": "1.0.0",
+  "description": "Playground for various programming techniques starting with a really bad version of Fizz-Buzz",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jay D. McHugh",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^5.15.3"
+  }
+}
