@@ -86,6 +86,7 @@ Table user {
   firstName varchar
   lastName varchar
   password varchar
+  roleID long
   active boolean
 }
 
@@ -116,6 +117,35 @@ Table componentAttribute as specAttr {
   sequence int
   attributeValueID long
   value varchar
+}
+
+Table taskType {
+  id long PK
+  name varchar
+}
+
+Table taskPerformer {
+  id long PK
+  taskTypeID long
+  roleID long
+}
+
+Table role {
+  id long PK
+  title varchar
+}
+
+Table task {
+  id long PK
+  specificationID varchar
+  taskTypeID long
+  dueDate datetime
+}
+
+Table taskDependence {
+  id long PK
+  taskID long
+  dependsOn long
 }
 
 Ref: "attributeType"."id" < "attribute"."attributeTypeID"
@@ -169,3 +199,19 @@ Ref: "component"."id" < "componentAttribute"."componentID"
 Ref: "attribute"."id" < "componentAttribute"."attributeID"
 
 Ref: "attributeValueOption"."id" < "componentAttribute"."attributeValueID"
+
+Ref: "role"."id" < "user"."roleID"
+
+Ref: "taskType"."id" < "task"."taskTypeID"
+
+Ref: "taskType"."id" < "taskPerformer"."taskTypeID"
+
+Ref: "role"."id" < "taskPerformer"."roleID"
+
+Ref: "task"."id" < "taskDependence"."taskID"
+
+Ref: "task"."id" < "taskDependence"."dependsOn"
+
+Ref: "specification"."id" < "task"."id"
+
+Ref: "generic"."id" < "specification"."parentID"

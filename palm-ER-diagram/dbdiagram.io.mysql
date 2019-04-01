@@ -1,138 +1,173 @@
-CREATE TABLE `attribute` 
+CREATE TABLE `attribute`
 (
-	`id` long,
-	`attributeTypeID` long,
-	`name` varchar(255)
+  `id` long PRIMARY KEY,
+  `attributeTypeID` long,
+  `name` varchar(255)
 );
 
-CREATE TABLE `attributeType` 
+CREATE TABLE `attributeType`
 (
-	`id` long,
-	`name` varchar(255),
-	`type` enum
+  `id` long PRIMARY KEY,
+  `name` varchar(255),
+  `type` enum
 );
 
-CREATE TABLE `attributeValueOption` 
+CREATE TABLE `attributeValueOption`
 (
-	`id` long,
-	`attributeID` long,
-	`value` varchar(255)
+  `id` long PRIMARY KEY,
+  `attributeID` long,
+  `value` varchar(255)
 );
 
-CREATE TABLE `componentType` 
+CREATE TABLE `componentType`
 (
-	`id` long,
-	`name` varchar(255)
+  `id` long PRIMARY KEY,
+  `name` varchar(255)
 );
 
-CREATE TABLE `componentTypeAttribute` 
+CREATE TABLE `componentTypeAttribute`
 (
-	`id` long,
-	`componentTypeID` long,
-	`attributeID` long,
-	`sequence` int
+  `id` long PRIMARY KEY,
+  `componentTypeID` long,
+  `attributeID` long,
+  `sequence` int
 );
 
-CREATE TABLE `generic` 
+CREATE TABLE `generic`
 (
-	`id` varchar(255),
-	`specCategoryID` long,
-	`specLineID` long,
-	`specGroupID` long,
-	`version` long,
-	`name` varchar(255),
-	`ownerID` long
+  `id` varchar(255) PRIMARY KEY,
+  `specCategoryID` long,
+  `specLineID` long,
+  `specGroupID` long,
+  `version` long,
+  `name` varchar(255),
+  `ownerID` long
 );
 
-CREATE TABLE `genericComponent` 
+CREATE TABLE `genericComponent`
 (
-	`id` long,
-	`genericID` varchar(255),
-	`componentTypeID` long,
-	`label` varchar(255)
+  `id` long PRIMARY KEY,
+  `genericID` varchar(255),
+  `componentTypeID` long,
+  `label` varchar(255)
 );
 
-CREATE TABLE `genericComponentAttribute` 
+CREATE TABLE `genericComponentAttribute`
 (
-	`id` long,
-	`genericComponentID` long,
-	`attributeID` long,
-	`sequence` int,
-	`attributeValueOptionID` long,
-	`value` varchar(255)
+  `id` long PRIMARY KEY,
+  `genericComponentID` long,
+  `attributeID` long,
+  `sequence` int,
+  `attributeValueOptionID` long,
+  `value` varchar(255)
 );
 
-CREATE TABLE `specCategory` 
+CREATE TABLE `specCategory`
 (
-	`id` long,
-	`name` varchar(255)
+  `id` long PRIMARY KEY,
+  `name` varchar(255)
 );
 
-CREATE TABLE `specLine` 
+CREATE TABLE `specLine`
 (
-	`id` long,
-	`name` varchar(255)
+  `id` long PRIMARY KEY,
+  `name` varchar(255)
 );
 
-CREATE TABLE `specGroup` 
+CREATE TABLE `specGroup`
 (
-	`id` long,
-	`name` varchar(255)
+  `id` long PRIMARY KEY,
+  `name` varchar(255)
 );
 
-CREATE TABLE `categoryLine` 
+CREATE TABLE `categoryLine`
 (
-	`id` long,
-	`categoryID` long,
-	`lineID` long
+  `id` long PRIMARY KEY,
+  `categoryID` long,
+  `lineID` long
 );
 
-CREATE TABLE `lineGroup` 
+CREATE TABLE `lineGroup`
 (
-	`id` long,
-	`lineID` long,
-	`groupID` long
+  `id` long PRIMARY KEY,
+  `lineID` long,
+  `groupID` long
 );
 
-CREATE TABLE `user` 
+CREATE TABLE `user`
 (
-	`id` long,
-	`firstName` varchar(255),
-	`lastName` varchar(255),
-	`password` varchar(255),
-	`active` boolean
+  `id` long PRIMARY KEY,
+  `firstName` varchar(255),
+  `lastName` varchar(255),
+  `password` varchar(255),
+  `roleID` long,
+  `active` boolean
 );
 
-CREATE TABLE `specification` 
+CREATE TABLE `specification`
 (
-	`id` varchar(255),
-	`parentID` varchar(255),
-	`categoryID` long,
-	`lineID` long,
-	`groupID` long,
-	`version` long,
-	`name` varchar(255),
-	`description` blob,
-	`ownerID` long
+  `id` varchar(255) PRIMARY KEY,
+  `parentID` varchar(255),
+  `categoryID` long,
+  `lineID` long,
+  `groupID` long,
+  `version` long,
+  `name` varchar(255),
+  `description` blob,
+  `ownerID` long
 );
 
-CREATE TABLE `component` 
+CREATE TABLE `component`
 (
-	`id` long,
-	`specID` varchar(255),
-	`parentID` long,
-	`componentTypeID` long,
-	`label` varchar(255)
+  `id` long PRIMARY KEY,
+  `specID` varchar(255),
+  `parentID` long,
+  `componentTypeID` long,
+  `label` varchar(255)
 );
 
-CREATE TABLE `componentAttribute` 
+CREATE TABLE `componentAttribute`
 (
-	`id` long,
-	`componentID` long,
-	`attributeID` long,
-	`sequence` int,
-	`attributeValueID` long,
-	`value` varchar(255)
+  `id` long PRIMARY KEY,
+  `componentID` long,
+  `attributeID` long,
+  `sequence` int,
+  `attributeValueID` long,
+  `value` varchar(255)
+);
+
+CREATE TABLE `taskType`
+(
+  `id` long PRIMARY KEY,
+  `name` varchar(255)
+);
+
+CREATE TABLE `taskPerformer`
+(
+  `id` long PRIMARY KEY,
+  `taskTypeID` long,
+  `roleID` long
+);
+
+CREATE TABLE `role`
+(
+  `id` long PRIMARY KEY,
+  `title` varchar(255)
+);
+
+CREATE TABLE `task`
+(
+  `id` long PRIMARY KEY,
+  `specificationID` varchar(255),
+  `taskTypeID` long,
+  `dueDate` datetime
+);
+
+CREATE TABLE `taskDependence`
+(
+  `id` long PRIMARY KEY,
+  `taskID` long,
+  `dependsOn` long
 );
 
 ALTER TABLE `attribute` ADD FOREIGN KEY (`attributeTypeID`) REFERENCES `attributeType` (`id`);
@@ -186,3 +221,19 @@ ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`componentID`) REFERENCES `com
 ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`attributeID`) REFERENCES `attribute` (`id`);
 
 ALTER TABLE `componentAttribute` ADD FOREIGN KEY (`attributeValueID`) REFERENCES `attributeValueOption` (`id`);
+
+ALTER TABLE `user` ADD FOREIGN KEY (`roleID`) REFERENCES `role` (`id`);
+
+ALTER TABLE `task` ADD FOREIGN KEY (`taskTypeID`) REFERENCES `taskType` (`id`);
+
+ALTER TABLE `taskPerformer` ADD FOREIGN KEY (`taskTypeID`) REFERENCES `taskType` (`id`);
+
+ALTER TABLE `taskPerformer` ADD FOREIGN KEY (`roleID`) REFERENCES `role` (`id`);
+
+ALTER TABLE `taskDependence` ADD FOREIGN KEY (`taskID`) REFERENCES `task` (`id`);
+
+ALTER TABLE `taskDependence` ADD FOREIGN KEY (`dependsOn`) REFERENCES `task` (`id`);
+
+ALTER TABLE `task` ADD FOREIGN KEY (`id`) REFERENCES `specification` (`id`);
+
+ALTER TABLE `specification` ADD FOREIGN KEY (`parentID`) REFERENCES `generic` (`id`);
