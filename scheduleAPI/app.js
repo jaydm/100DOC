@@ -17,6 +17,7 @@ const db = mongoose.connection;
 const port = process.env.PORT || 3000;
 
 const TaskType = require('./models/taskTypeModel');
+const User = require('./models/userModel');
 
 app.get('/api', (req, res) => {
   console.log('hello world');
@@ -55,6 +56,8 @@ app.post('/api/taskTypes', (req, res) => {
 });
 
 app.get('/api/taskTypes/:id', (req, res) => {
+  console.log(req.body);
+
   TaskType.find({}, (err, taskTypes) => {
     if (err) {
       res.json({
@@ -62,10 +65,58 @@ app.get('/api/taskTypes/:id', (req, res) => {
         message: err,
       });
     }
+
     res.json({
       status: 'success',
       message: 'Task types retrieved successfully',
       data: taskTypes
+    });
+  });
+});
+
+app.get('/api/users', (req, res) => {
+  console.log(req.body);
+
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json({
+        status: 'error',
+        message: err,
+      });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Task types retrieved successfully',
+      data: users
+    });
+  });
+});
+
+app.post('/api/users', (req, res) => {
+  const user = new User(req.body);
+  console.log(user);
+
+  user.save((err, savedUser) => {
+    res.json(savedUser);
+  });
+});
+
+app.get('/api/users/:id', (req, res) => {
+  console.log(req.body);
+
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json({
+        status: 'error',
+        message: err,
+      });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Task types retrieved successfully',
+      data: users
     });
   });
 });
