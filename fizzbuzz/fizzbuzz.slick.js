@@ -2,12 +2,14 @@ function testMultiple(factor, message) {
   return (number) => (number % factor === 0 ? message : '')
 }
 
-function fizzBuzz(countUpTo, fizz = { factor: 3, message: 'fizz' }, buzz = { factor: 5, message: 'buzz' }) {
-  const _fizz = testMultiple(fizz.factor, fizz.message);
-  const _buzz = testMultiple(buzz.factor, buzz.message);
+function fizzBuzz(countUpTo, fizzFactor = 3, buzzFactor = 5, fizzMessage = 'fizz', buzzMessage = 'buzz') {
+  const _fizz = testMultiple(fizzFactor, fizzMessage);
+  const _buzz = testMultiple(buzzFactor, buzzMessage);
+
+  const outputBox = document.getElementById('fizzBuzzOutput')
 
   for (let i = 1; i <= countUpTo; i++) {
-    console.log(_fizz(i) + _buzz(i) || i)
+    outputBox.value += (_fizz(i) + _buzz(i) || i) + '\n'
   }
 }
 

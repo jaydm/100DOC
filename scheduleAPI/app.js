@@ -1,42 +1,77 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
-const db = mongoose.connect('mongodb://localhost/scheduleAPI');
-const scheduleRouter = express.Router();
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/scheduleAPI', { useNewUrlParser: true });
+const db = mongoose.connection;
+
 const port = process.env.PORT || 3000;
-const Project = require('./models/projectModel');
 
-scheduleRouter.route('/schedule')
-  .get((req, res) => {
-    const query = {};
+const TaskType = require('./models/taskTypeModel');
 
-    if (req.query.projectID) {
-      query.projectID = req.query.projectID;
+app.get('/api', (req, res) => {
+  console.log('hello world');
+
+  res.json({
+    status: 'API Is Working',
+    message: 'Welcome to the Schedule API!',
+  });
+});
+
+app.get('/api/taskTypes', (req, res) => {
+  console.log(req.body);
+
+  TaskType.find({}, (err, taskTypes) => {
+    if (err) {
+      res.json({
+        status: 'error',
+        message: err,
+      });
     }
-
-    Project.find(query, (err, projects) => {
-      if (err) {
-        return res.send(err);
-      }
-
-      return res.json(projects);
+    res.json({
+      status: 'success',
+      message: 'Task types retrieved successfully',
+      data: taskTypes
     });
   });
+});
 
-scheduleRouter.route('/schedule/:projectId')
-  .get((req, res) => {
-    Project.findById(req.params.projectId, (err, projects) => {
-      if (err) {
-        return res.send(err);
-      }
+app.post('/api/taskTypes', (req, res) => {
+  const taskType = new TaskType(req.body);
+  console.log(taskType);
 
-      return res.json(projects);
+  taskType.save((err, savedTaskType) => {
+    res.json(savedTaskType);
+  });
+});
+
+app.get('/api/taskTypes/:id', (req, res) => {
+  TaskType.find({}, (err, taskTypes) => {
+    if (err) {
+      res.json({
+        status: 'error',
+        message: err,
+      });
+    }
+    res.json({
+      status: 'success',
+      message: 'Task types retrieved successfully',
+      data: taskTypes
     });
   });
-
-app.use('/api', scheduleRouter);
+});
 
 app.listen(port, () => {
-  console.log('Running on port: ' + port);
+  const runningMessage = `Running on port: ${port}`;
+
+  console.log(runningMessage);
 });

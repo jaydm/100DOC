@@ -36,12 +36,12 @@ function message(testNumber) {
     return 'buzz'
   }
 
-  return ''
+  return testNumber
 }
 
 function fizzBuzz(countUpTo) {
   for (let i = 1; i <= countUpTo; i++) {
-    console.log(i + ": " + message(i))
+    console.log(message(i))
   }
 }
 

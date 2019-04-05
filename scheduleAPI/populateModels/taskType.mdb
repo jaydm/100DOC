@@ -1,0 +1,61 @@
+db.scheduleAPI.taskTypes.drop()
+db.taskTypes.drop()
+
+use scheduleAPI;
+
+db.taskTypes.insert([
+  {
+    _id: "S20",
+    name: "PD Dummy Approval",
+    days: 189,
+    "created_date": new Date()
+ },
+ {
+   _id: "S30",
+   name: "Chip Approval",
+   days: 175,
+   "created_date": new Date()
+ },
+ {
+   _id: "S40",
+   name: "PS Form Approval",
+   days: 182,
+   "created_date": new Date()
+ },
+ {
+   _id: "S60",
+   name: "TA Due",
+   days: 175,
+   "created_date": new Date()
+ },
+ {
+   _id: "S70",
+   name: "Material To Printer",
+   days: 126,
+   "created_date": new Date()
+ },
+ {
+   _id: "S74",
+   name: "Ozalids Due",
+   days: 112,
+   "created_date": new Date()
+ },
+ {
+   _id: "S75",
+   name: "Ozalids approved",
+   days: 105,
+   "created_date": new Date()
+ },
+ {
+   _id: "S80",
+   name: "Ship",
+   days: 42,
+   "created_date": new Date()
+ },
+ {
+   _id: "S90",
+   name: "Delivery",
+   days: 0,
+   "created_date": new Date()
+ }
+])
